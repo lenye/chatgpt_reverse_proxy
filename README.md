@@ -57,6 +57,8 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 ## 使用样例
 
+### openai
+
 #### go
 
 ```go
@@ -73,7 +75,7 @@ import (
 func main() {
    cfg := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))
     
-   // 修改BaseURL为代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
+   // 修改 BaseURL 为反向代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
    cfg.BaseURL = "https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1"
     
    client := openai.NewClientWithConfig(cfg)
@@ -100,7 +102,7 @@ import openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# 修改 api_base 为代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
+# 修改 api_base 为反向代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
 openai.api_base = "https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1"
 
 # list models
