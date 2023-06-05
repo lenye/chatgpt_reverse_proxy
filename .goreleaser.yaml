@@ -33,7 +33,7 @@ archives:
   - id: tencentcloud
     builds:
       - tencentcloud_chatgpt_reverse_proxy
-    name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    name_template: 'tencentcloud_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
 
     files:
