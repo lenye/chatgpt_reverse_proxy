@@ -1,0 +1,56 @@
+project_name: chatgpt_reverse_proxy
+
+
+before:
+  hooks:
+    - go mod tidy
+
+
+builds:
+  - id: tencentcloud_chatgpt_reverse_proxy
+    binary: main
+
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.Binary}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+    flags:
+      - -trimpath
+    goos:
+      - linux
+    goarch:
+      - amd64
+    goamd64:
+      - v2
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+
+archives:
+  - id: tencentcloud
+    builds:
+      - tencentcloud_chatgpt_reverse_proxy
+    name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: zip
+
+    files:
+      - scf_bootstrap
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "{{ .ProjectName }}_v{{ .Version }}_checksums.txt"
+
+
+changelog:
+  filters:
+    exclude:
+      - '^wip:'
+      - '^docs:'
+      - '^test:'
+      - '^style:'
+      - '^chore:'
+      - '^ci:'
