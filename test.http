@@ -1,0 +1,16 @@
+GET {{host}}/v1/models/gpt-3.5-turbo
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+###
+# httpbin.org
+POST {{host}}/post
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 999,
+  "value": "content"
+}
+
