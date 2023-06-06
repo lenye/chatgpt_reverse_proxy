@@ -99,7 +99,6 @@ func main() {
 
 #### 其他样例
 
-
 <details>
 <summary>python</summary>
 
@@ -118,4 +117,6 @@ models = openai.Model.list()
 # print the first model's id
 print(models.data[0].id)
 ```
+
 </details>
+
