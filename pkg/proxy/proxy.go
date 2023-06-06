@@ -23,6 +23,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+	"time"
 
 	"golang.org/x/net/http/httpguts"
 )
@@ -33,11 +34,14 @@ const StatusClientClosedRequest = 499
 // StatusClientClosedRequestText non-standard HTTP status for client disconnection.
 const StatusClientClosedRequestText = "Client Closed Request"
 
+const DefaultFlushInterval = 100 * time.Millisecond
+
 func BuildSingleHostProxy(target *url.URL) http.Handler {
 	return &httputil.ReverseProxy{
-		Director:     directorBuilder(target, false),
-		BufferPool:   newBufferPool(),
-		ErrorHandler: errorHandler,
+		Director:      directorBuilder(target, false),
+		FlushInterval: DefaultFlushInterval,
+		BufferPool:    newBufferPool(),
+		ErrorHandler:  errorHandler,
 	}
 }
 

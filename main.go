@@ -48,7 +48,7 @@ func main() {
 		return
 	}
 
-	log.Printf("target: %s", target.Url)
+	log.Printf("reverse proxy target: %s", target.Url)
 
 	oxyTarget, err := url.Parse(target.Url)
 	if err != nil {
