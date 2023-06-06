@@ -1,12 +1,17 @@
-# chatGPT 反向代理
+# ChatGPT_reverse_proxy
 
-搭建 chatGPT 反向代理服务，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
+ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 
-## 腾讯云函数
+默认支持 ChatGPT API 反向代理，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
+
+可以在自建服务器、腾讯云函数上使用。
+
+<details>
+<summary>腾讯云函数使用教程</summary>
 
 使用腾讯云函数来搭建 chatGPT 反向代理服务。
 
-### A. 新建云函数
+#### A. 新建云函数
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “云产品” --> “Serverless” --> “云函数”
@@ -35,7 +40,7 @@
 
 ![高级配置.png](docs/new2.png)
 
-### B. 函数管理
+#### B. 函数管理
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “函数服务” --> 在函数列表中选择刚刚新建函数“chatGPT”
@@ -46,7 +51,7 @@
 
 ![访问路径.png](docs/new3.png)
 
-### C. chatGPT 反向代理服务，腾讯云函数的地址
+#### C. chatGPT 反向代理服务，腾讯云函数的地址
 
 访问路径去除 "/release/"，得到 chatGPT 反向代理服务，腾讯云函数的地址:
 
@@ -54,46 +59,49 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 请求 chatGPT api 时，直接把接口地址 ( https://api.openai.com ) 替换为腾讯云函数的地址。
 
+</details>
 
 ## 使用样例
 
 ### openai
 
-#### go
-
 ```go
 package main
 
 import (
-   "context"
-   "fmt"
-   "os"
+	"context"
+	"fmt"
+	"os"
 
-   "github.com/sashabaranov/go-openai"
+	"github.com/sashabaranov/go-openai"
 )
 
 func main() {
-   cfg := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))
-    
-   // 修改 BaseURL 为反向代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
-   cfg.BaseURL = "https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1"
-    
-   client := openai.NewClientWithConfig(cfg)
+	cfg := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))
 
-   ctx := context.Background()
-   // list models
-   models, err := client.ListModels(ctx)
-   if err != nil {
-      fmt.Printf("ListModels error: %v\n", err)
-      os.Exit(1)
-   }
-   // print the first model's id
-   fmt.Println(models.Models[0].ID)
+	// 修改 BaseURL 为反向代理服务的地址，当前示例为腾讯云函数的地址，不要忘记"/v1"
+	cfg.BaseURL = "https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1"
+
+	client := openai.NewClientWithConfig(cfg)
+
+	ctx := context.Background()
+	// list models
+	models, err := client.ListModels(ctx)
+	if err != nil {
+		fmt.Printf("ListModels error: %v\n", err)
+		os.Exit(1)
+	}
+	// print the first model's id
+	fmt.Println(models.Models[0].ID)
 }
 
 ```
 
-#### python
+#### 其他样例
+
+
+<details>
+<summary>python</summary>
 
 ```python
 import os
@@ -110,3 +118,4 @@ models = openai.Model.list()
 # print the first model's id
 print(models.data[0].id)
 ```
+</details>
