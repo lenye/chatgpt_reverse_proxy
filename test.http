@@ -1,16 +1,52 @@
+# openai
+
 GET {{host}}/v1/models/gpt-3.5-turbo
 Accept: application/json
 Authorization: Bearer {{token}}
 
 
 ###
-# httpbin.org
-POST {{host}}/post
+
+# os environment variables
+# TARGET=https://httpbin.org
+
+GET {{host}}/anything/v1/models/gpt-3.5-turbo
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{
-  "id": 999,
-  "value": "content"
-}
+###
 
+# 腾讯云函数 响应测试
+
+//{
+//    "args": {},
+//    "data": "",
+//    "files": {},
+//    "form": {},
+//    "headers": {
+//        "Accept-Encoding": "br,deflate,gzip,x-gzip",
+//        "Authorization": "Bearer sk-test1234567",
+//        "Content-Type": "application/json",
+//        "Host": "httpbin.org",
+//        "User-Agent": "Apache-HttpClient/4.5.14 (Java/17.0.6)",
+//        "X-Amzn-Trace-Id": "Root=1-647ea096-139c8d9e1d67b25d780c0b3c",
+//        "X-Api-Requestid": "a61dfb297cf6d24085c16a829170ee1b",
+//        "X-Client-Proto": "https",
+//        "X-Client-Proto-Ver": "HTTP/1.1",
+//        "X-Scf-Appid": "1318504042",
+//        "X-Scf-Memory": "128",
+//        "X-Scf-Name": "bin",
+//        "X-Scf-Namespace": "default",
+//        "X-Scf-Region": "na-siliconvalley",
+//        "X-Scf-Request-Id": "a61dfb297cf6d24085c16a829170ee1b",
+//        "X-Scf-Timeout": "180000",
+//        "X-Scf-Uin": "100005809430",
+//        "X-Scf-Version": "$LATEST"
+//    },
+//    "json": null,
+//    "method": "GET",
+//    "origin": "218.5.26.9, 203.0.113.1, 49.51.37.238",
+//    "url": "https://httpbin.org/anything/v1/models/gpt-3.5-turbo"
+//}
+
+###
