@@ -7,14 +7,52 @@ before:
 
 
 builds:
-  - id: tencentcloud_chatgpt_reverse_proxy
-    binary: main
+  - id: reverse_proxy
+    binary: chatgpt_reverse_proxy
 
     env:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.Binary}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+    flags:
+      - -trimpath
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+      - 386
+      - arm
+    goamd64:
+      - v2
+    goarm:
+      - 7
+      - 6
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: darwin
+        goarch: 386
+      - goos: darwin
+        goarch: arm
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+
+  - id: tencentcloud
+    binary: main
+
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=tencentcloud_chatgpt_reverse_proxy
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
@@ -30,9 +68,23 @@ builds:
 
 
 archives:
+  - id: reverse_proxy
+    builds:
+      - chatgpt_reverse_proxy
+    name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+
+    files:
+      - LICENSE
+      - README.md
+
+
   - id: tencentcloud
     builds:
-      - tencentcloud_chatgpt_reverse_proxy
+      - tencentcloud
     name_template: 'tencentcloud_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
 
@@ -40,6 +92,7 @@ archives:
       - scf_bootstrap
       - LICENSE
       - README.md
+
 
 checksum:
   name_template: "{{ .ProjectName }}_v{{ .Version }}_checksums.txt"
