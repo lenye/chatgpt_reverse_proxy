@@ -6,6 +6,11 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 
 可以在自建服务器、腾讯云函数上使用。
 
+### 可用的环境变量
+
+1. REVERSE_PROXY_TARGET: 反向代理目标，默认=https://api.openai.com
+2. REVERSE_PROXY_PORT: 代理服务端口，默认=9000
+
 <details>
 <summary>腾讯云函数使用教程</summary>
 
@@ -26,9 +31,9 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
     - 函数代码
         - 提交方法: 本地上传zip包
 
-          zip 包文件名: tencentcloud_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
-
           下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
+          
+          文件名: tencentcloud_scf_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
     - 高级配置
         - 启动命令: 自定义模板
     - 环境配置

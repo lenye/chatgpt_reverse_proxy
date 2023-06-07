@@ -25,6 +25,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"unicode"
 
 	"github.com/lenye/chatgpt_reverse_proxy/internal/target"
 	"github.com/lenye/chatgpt_reverse_proxy/pkg/proxy"
@@ -36,29 +37,35 @@ func main() {
 		showVersion = flag.Bool("version", false, "print version string")
 	)
 
-	if envTarget, ok := os.LookupEnv("TARGET"); ok {
-		if envTarget != "" {
-			target.Url = envTarget
-		}
-	}
-
 	flag.Parse()
 	if *showVersion {
 		fmt.Print(version.Print())
 		return
 	}
 
+	if envTarget, ok := os.LookupEnv("REVERSE_PROXY_TARGET"); ok {
+		if envTarget != "" {
+			target.Url = envTarget
+		}
+	}
 	log.Printf("reverse proxy target: %s", target.Url)
 
 	oxyTarget, err := url.Parse(target.Url)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("invalid REVERSE_PROXY_TARGET: %s")
 	}
-
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
 
 	port := "9000"
-	log.Printf("server on port %s", port)
+	if envPort, ok := os.LookupEnv("REVERSE_PROXY_PORT"); ok {
+		if envPort != "" {
+			if !isDigit(envPort) {
+				log.Fatalf("invalid REVERSE_PROXY_PORT: %s", envPort)
+			}
+			port = envPort
+		}
+	}
+	log.Printf("reverse proxy serve on port %s", port)
 
 	srv := &http.Server{Addr: ":" + port, Handler: oxy}
 
@@ -90,4 +97,13 @@ func main() {
 
 	log.Printf("%s exit, start: %s, uptime: %s",
 		version.AppName, version.StartTime, time.Since(version.StartTime))
+}
+
+func isDigit(s string) bool {
+	for _, c := range s {
+		if !unicode.IsDigit(c) {
+			return false
+		}
+	}
+	return true
 }

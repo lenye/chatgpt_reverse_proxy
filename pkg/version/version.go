@@ -18,8 +18,6 @@ import (
 	"fmt"
 	"runtime"
 	"time"
-
-	"github.com/lenye/chatgpt_reverse_proxy/internal/target"
 )
 
 var (
@@ -39,11 +37,10 @@ const versionTemplate = `%s
  Built:       %s
  Go version:  %s
  OS/Arch:     %s/%s
- Target:      %s
  Open source: %s
 `
 
 func Print() string {
 	return fmt.Sprintf(versionTemplate,
-		AppName, Version, BuildCommit, BuildTime, runtime.Version(), runtime.GOOS, runtime.GOARCH, target.Url, OpenSource)
+		AppName, Version, BuildCommit, BuildTime, runtime.Version(), runtime.GOOS, runtime.GOARCH, OpenSource)
 }
