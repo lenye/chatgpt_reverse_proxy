@@ -45,14 +45,14 @@ builds:
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 
-  - id: tencentcloud
+  - id: tencentcloud_scf
     binary: main
 
     env:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=tencentcloud_chatgpt_reverse_proxy
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=tencentcloud_scf_chatgpt_reverse_proxy
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
@@ -82,10 +82,10 @@ archives:
       - README.md
 
 
-  - id: tencentcloud
+  - id: tencentcloud_scf
     builds:
-      - tencentcloud
-    name_template: 'tencentcloud_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+      - tencentcloud_scf
+    name_template: 'tencentcloud_scf_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
 
     files:
