@@ -9,51 +9,51 @@ Authorization: Bearer {{token}}
 
 # openai 响应
 
-#  HTTP/1.1 200 OK
-#  Content-Type: application/json
-#  Content-Length: 283
-#  Connection: keep-alive
-#  X-Api-RequestId: 3361353534fce81fd206d4136ebd12345
-#  Access-Control-Allow-Origin: *
-#  Alt-Svc: h3=":443"; ma=86400
-#  Cf-Cache-Status: DYNAMIC
-#  Cf-Ray: 7ujmd14c1f8d9965-ERT
-#  Content-Encoding: br
-#  Openai-Processing-Ms: 36
-#  Openai-Version: 2020-10-01
-#  Strict-Transport-Security: max-age=15724800; includeSubDomains
-#  Vary: Accept-Encoding
-#  X-Request-Id: 11d6fb4679925061481f69e6e4212345
-#
-#  {
-#      "id": "gpt-3.5-turbo",
-#      "object": "model",
-#      "created": 2465712975,
-#      "owned_by": "openai",
-#      "permission": [
-#          {
-#              "id": "modelperm-tgbYhU0gwCzaPSfffPp9qazv",
-#              "object": "model_permission",
-#              "created": 2465712975,
-#              "allow_create_engine": false,
-#              "allow_sampling": true,
-#              "allow_logprobs": true,
-#              "allow_search_indices": false,
-#              "allow_view": true,
-#              "allow_fine_tuning": false,
-#              "organization": "*",
-#              "group": null,
-#              "is_blocking": false
-#          }
-#      ],
-#      "root": "gpt-3.5-turbo",
-#      "parent": null
-#  }
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 283
+Connection: keep-alive
+X-Api-RequestId: 3361353534fce81fd206d4136ebd12345
+Access-Control-Allow-Origin: *
+Alt-Svc: h3=":443"; ma=86400
+Cf-Cache-Status: DYNAMIC
+Cf-Ray: 7ujmd14c1f8d9965-ERT
+Content-Encoding: br
+Openai-Processing-Ms: 36
+Openai-Version: 2020-10-01
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+Vary: Accept-Encoding
+X-Request-Id: 11d6fb4679925061481f69e6e4212345
+
+{
+    "id": "gpt-3.5-turbo",
+    "object": "model",
+    "created": 2465712975,
+    "owned_by": "openai",
+    "permission": [
+        {
+            "id": "modelperm-tgbYhU0gwCzaPSfffPp9qazv",
+            "object": "model_permission",
+            "created": 2465712975,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+        }
+    ],
+    "root": "gpt-3.5-turbo",
+    "parent": null
+}
 
 ###
 
 # os environment variables
-# TARGET=https://httpbin.org
+# REVERSE_PROXY_TARGET=https://httpbin.org
 
 GET {{host}}/anything/v1/models/gpt-3.5-turbo
 Content-Type: application/json
@@ -63,35 +63,44 @@ Authorization: Bearer {{token}}
 
 # 腾讯云函数 响应
 
-#  {
-#      "args": {},
-#      "data": "",
-#      "files": {},
-#      "form": {},
-#      "headers": {
-#          "Accept-Encoding": "br,deflate,gzip,x-gzip",
-#          "Authorization": "Bearer sk-test1234567",
-#          "Content-Type": "application/json",
-#          "Host": "httpbin.org",
-#          "User-Agent": "Apache-HttpClient/4.5.14 (Java/17.0.6)",
-#          "X-Amzn-Trace-Id": "Root=1-356ea299-139c8d9e1d67b25d780qwezz",
-#          "X-Api-Requestid": "887dfb297cf6d24085c16a82917ertcb",
-#          "X-Client-Proto": "https",
-#          "X-Client-Proto-Ver": "HTTP/1.1",
-#          "X-Scf-Appid": "1234504567",
-#          "X-Scf-Memory": "64",
-#          "X-Scf-Name": "chatGPT",
-#          "X-Scf-Namespace": "default",
-#          "X-Scf-Region": "na-siliconvalley",
-#          "X-Scf-Request-Id": "qazdfb297cf6d24085c16a82917poikm",
-#          "X-Scf-Timeout": "180000",
-#          "X-Scf-Uin": "897655823456",
-#          "X-Scf-Version": "$LATEST"
-#      },
-#      "json": null,
-#      "method": "GET",
-#      "origin": "218.5.26.9, 203.0.113.1, 49.51.37.238",
-#      "url": "https://httpbin.org/anything/v1/models/gpt-3.5-turbo"
-#  }
+HTTP/1.1 200 OK
+Date: Thu, 08 Jun 2023 03:17:18 GMT
+Content-Type: application/json
+Content-Length: 507
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+    "args": {},
+    "data": "",
+    "files": {},
+    "form": {},
+    "headers": {
+        "Accept-Encoding": "br,deflate,gzip,x-gzip",
+        "Authorization": "Bearer sk-test1234567",
+        "Content-Type": "application/json",
+        "Host": "httpbin.org",
+        "User-Agent": "Apache-HttpClient/4.5.14 (Java/17.0.6)",
+        "X-Amzn-Trace-Id": "Root=1-356ea299-139c8d9e1d67b25d780qwezz",
+        "X-Api-Requestid": "887dfb297cf6d24085c16a82917ertcb",
+        "X-Client-Proto": "https",
+        "X-Client-Proto-Ver": "HTTP/1.1",
+        "X-Scf-Appid": "1234504567",
+        "X-Scf-Memory": "64",
+        "X-Scf-Name": "chatGPT",
+        "X-Scf-Namespace": "default",
+        "X-Scf-Region": "na-siliconvalley",
+        "X-Scf-Request-Id": "qazdfb297cf6d24085c16a82917poikm",
+        "X-Scf-Timeout": "180000",
+        "X-Scf-Uin": "897655823456",
+        "X-Scf-Version": "$LATEST"
+    },
+    "json": null,
+    "method": "GET",
+    "origin": "218.5.26.9, 203.0.113.1, 49.51.37.238",
+    "url": "https://httpbin.org/anything/v1/models/gpt-3.5-turbo"
+}
 
 ###
