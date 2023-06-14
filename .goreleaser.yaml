@@ -30,6 +30,7 @@ builds:
       - arm64
       - 386
       - arm
+      - riscv64
     goamd64:
       - v2
     goarm:
