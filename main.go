@@ -23,11 +23,15 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
-	"unicode"
 
-	"github.com/lenye/chatgpt_reverse_proxy/internal/target"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
+	"github.com/lenye/chatgpt_reverse_proxy/pkg/alice"
+	"github.com/lenye/chatgpt_reverse_proxy/pkg/middleware/apikey"
+	"github.com/lenye/chatgpt_reverse_proxy/pkg/middleware/auth"
 	"github.com/lenye/chatgpt_reverse_proxy/pkg/proxy"
 	"github.com/lenye/chatgpt_reverse_proxy/pkg/version"
 )
@@ -43,31 +47,34 @@ func main() {
 		return
 	}
 
-	if envTarget, ok := os.LookupEnv("REVERSE_PROXY_TARGET"); ok {
-		if envTarget != "" {
-			target.Url = envTarget
-		}
-	}
-	log.Printf("reverse proxy target: %s", target.Url)
+	config.GetEnv()
 
-	oxyTarget, err := url.Parse(target.Url)
+	// Target
+	oxyTarget, err := url.Parse(config.Target)
 	if err != nil {
-		log.Fatalf("invalid REVERSE_PROXY_TARGET: %s")
+		log.Fatalf("invalid %s=%s, cause%s", env.Target, config.Target, err)
 	}
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
 
-	port := "9000"
-	if envPort, ok := os.LookupEnv("REVERSE_PROXY_PORT"); ok {
-		if envPort != "" {
-			if !isDigit(envPort) {
-				log.Fatalf("invalid REVERSE_PROXY_PORT: %s", envPort)
-			}
-			port = envPort
+	// middleware
+	chain := alice.New()
+	switch config.AuthType {
+	case config.AuthTypeBasic:
+		cfg := auth.BasicConfig{
+			Users: strings.Split(config.AuthBasicUsers, ","),
 		}
+		chain = chain.Append(auth.Basic(&cfg))
+	case config.AuthTypeForward:
+		cfg := auth.ForwardConfig{
+			Address:            config.AuthForwardUrl,
+			TrustForwardHeader: true,
+		}
+		chain = chain.Append(auth.Forward(&cfg))
 	}
-	log.Printf("reverse proxy serve on port %s", port)
+	chain = chain.Append(apikey.Handler)
 
-	srv := &http.Server{Addr: ":" + port, Handler: oxy}
+	// http server
+	srv := &http.Server{Addr: ":" + config.Port, Handler: chain.Then(oxy)}
 
 	idleConnClosed := make(chan struct{})
 
@@ -97,13 +104,4 @@ func main() {
 
 	log.Printf("%s exit, start: %s, uptime: %s",
 		version.AppName, version.StartTime, time.Since(version.StartTime))
-}
-
-func isDigit(s string) bool {
-	for _, c := range s {
-		if !unicode.IsDigit(c) {
-			return false
-		}
-	}
-	return true
 }
