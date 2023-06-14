@@ -13,30 +13,8 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 3. OXY_API_TYPE: api 类型（open_ai、azure、azure_ad）；默认=open_ai
 4. OXY_API_KEY: api 授权；默认为空
 5. OXY_AUTH_TYPE: 代理认证类型（basic、forward），当使用代理认证时，OXY_API_KEY 不能空；默认为空，不认证
-6. OXY_AUTH_BASIC_USERS: http basic 认证的授权用户列表，在 OXY_AUTH_TYPE=basic 时必须填写；每个授权用户格式 name:
-   hashed-password，用户之间用 "," 分隔；linux 下使用使用 htpasswd 生成密码，在线 htpasswd
-   生成器 https://tool.oschina.net/htpasswd
+6. OXY_AUTH_BASIC_USERS: http basic 认证的授权用户列表，在 OXY_AUTH_TYPE=basic 时必须填写；每个授权用户格式 name:hashed-password，用户之间用 "," 分隔；linux 下使用使用 htpasswd 生成密码，在线 htpasswd 生成器 https://tool.oschina.net/htpasswd
 7. OXY_AUTH_FORWARD_URL: http forward 认证的 url，在 OXY_AUTH_TYPE=forward 时必须填写
-
-#### HTTP Basic 认证
-
-“Basic” HTTP 验证方案是在 [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617) 中规定的，在该方案中，使用用户的
-ID/密码作为凭据信息，并且使用 base64 算法进行编码。
-
-客户端请求认证，
-
-```text
-用户: Aladdin
-密码: open sesame
-```
-
-Authorization 首部的格式为 Basic base64(userid:password)
-
-```http request
-GET /v1/models/gpt-3.5-turbo
-Content-Type: application/json
-Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
-```
 
 ### 腾讯云函数配置
 
