@@ -5,6 +5,8 @@ package auth
 import (
 	"fmt"
 	"net/http"
+	"net/textproto"
+	"strings"
 )
 
 const contentType = "Content-Type"
@@ -46,17 +48,6 @@ var (
 		UnauthContentType: "text/plain",
 		UnauthResponse:    fmt.Sprintf("%d %s\n", http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized)),
 	}
-
-	// ProxyHeaders are Headers used by an HTTP Proxy server for proxy
-	// access authentication.
-	ProxyHeaders = &Headers{
-		Authenticate:      "Proxy-Authenticate",
-		Authorization:     "Proxy-Authorization",
-		AuthInfo:          "Proxy-Authentication-Info",
-		UnauthCode:        http.StatusProxyAuthRequired,
-		UnauthContentType: "text/plain",
-		UnauthResponse:    fmt.Sprintf("%d %s\n", http.StatusProxyAuthRequired, http.StatusText(http.StatusProxyAuthRequired)),
-	}
 )
 
 // BasicAuth is an authenticator implementation for 'Basic' HTTP
@@ -67,4 +58,29 @@ type BasicAuth struct {
 	// Headers used by authenticator. Set to ProxyHeaders to use with
 	// proxy server. When nil, NormalHeaders are used.
 	Headers *Headers
+}
+
+// CopyHeaders copies http headers from source to destination, it
+// does not override, but adds multiple headers.
+func CopyHeaders(dst http.Header, src http.Header) {
+	for k, vv := range src {
+		dst[k] = append(dst[k], vv...)
+	}
+}
+
+// RemoveHeaders removes the header with the given names from the headers map.
+func RemoveHeaders(headers http.Header, names ...string) {
+	for _, h := range names {
+		headers.Del(h)
+	}
+}
+
+func removeConnectionHeaders(h http.Header) {
+	for _, f := range h[connectionHeader] {
+		for _, sf := range strings.Split(f, ",") {
+			if sf = textproto.TrimString(sf); sf != "" {
+				h.Del(sf)
+			}
+		}
+	}
 }
