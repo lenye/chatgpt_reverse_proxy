@@ -27,27 +27,24 @@ import (
 )
 
 const (
-	forwardedTypeName = "ForwardedAuthType"
-	xForwardedURI     = "X-Forwarded-Uri"
-	xForwardedMethod  = "X-Forwarded-Method"
-	XForwardedProto   = "X-Forwarded-Proto"
-	XForwardedFor     = "X-Forwarded-For"
-	XForwardedHost    = "X-Forwarded-Host"
-	XForwardedPort    = "X-Forwarded-Port"
-	XForwardedServer  = "X-Forwarded-Server"
-	XRealIP           = "X-Real-Ip"
+	xForwardedURI    = "X-Forwarded-Uri"
+	xForwardedMethod = "X-Forwarded-Method"
+	XForwardedProto  = "X-Forwarded-Proto"
+	XForwardedFor    = "X-Forwarded-For"
+	XForwardedHost   = "X-Forwarded-Host"
+	XForwardedPort   = "X-Forwarded-Port"
+	XForwardedServer = "X-Forwarded-Server"
+	XRealIP          = "X-Real-Ip"
 )
 
 const (
-	Connection         = "Connection"
-	KeepAlive          = "Keep-Alive"
-	ProxyAuthenticate  = "Proxy-Authenticate"
-	ProxyAuthorization = "Proxy-Authorization"
-	Te                 = "Te" // canonicalized version of "TE"
-	Trailers           = "Trailers"
-	TransferEncoding   = "Transfer-Encoding"
-	Upgrade            = "Upgrade"
-	ContentLength      = "Content-Length"
+	Connection       = "Connection"
+	KeepAlive        = "Keep-Alive"
+	Te               = "Te" // canonicalized version of "TE"
+	Trailers         = "Trailers"
+	TransferEncoding = "Transfer-Encoding"
+	Upgrade          = "Upgrade"
+	ContentLength    = "Content-Length"
 )
 
 const (
