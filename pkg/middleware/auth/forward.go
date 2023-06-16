@@ -20,7 +20,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"regexp"
 	"strings"
 	"time"
 
@@ -75,22 +74,18 @@ type ForwardConfig struct {
 	TrustForwardHeader bool
 	// AuthResponseHeaders defines the list of headers to copy from the authentication server response and set on forwarded request, replacing any existing conflicting headers.
 	AuthResponseHeaders []string
-	// AuthResponseHeadersRegex defines the regex to match headers to copy from the authentication server response and set on forwarded request, after stripping all headers that match the regex.
-	AuthResponseHeadersRegex string
 	// AuthRequestHeaders defines the list of the headers to copy from the request to the authentication server.
 	// If not set or empty then all request headers are passed.
 	AuthRequestHeaders []string
 }
 
 type forwardAuth struct {
-	address                  string
-	authResponseHeaders      []string
-	authResponseHeadersRegex *regexp.Regexp
-	next                     http.Handler
-	name                     string
-	client                   http.Client
-	trustForwardHeader       bool
-	authRequestHeaders       []string
+	address             string
+	authResponseHeaders []string
+	trustForwardHeader  bool
+	authRequestHeaders  []string
+
+	client http.Client
 }
 
 // Forward 转发认证
@@ -103,7 +98,6 @@ func Forward(config *ForwardConfig) func(http.Handler) http.Handler {
 			fa := &forwardAuth{
 				address:             config.Address,
 				authResponseHeaders: config.AuthResponseHeaders,
-				next:                next,
 				trustForwardHeader:  config.TrustForwardHeader,
 				authRequestHeaders:  config.AuthRequestHeaders,
 			}
@@ -114,16 +108,6 @@ func Forward(config *ForwardConfig) func(http.Handler) http.Handler {
 					return http.ErrUseLastResponse
 				},
 				Timeout: 30 * time.Second,
-			}
-
-			if config.AuthResponseHeadersRegex != "" {
-				re, err := regexp.Compile(config.AuthResponseHeadersRegex)
-				if err != nil {
-					log.Printf("error compiling regular expression %s: %s", config.AuthResponseHeadersRegex, err)
-					w.WriteHeader(http.StatusInternalServerError)
-					return
-				}
-				fa.authResponseHeadersRegex = re
 			}
 
 			// Remover removes hop-by-hop headers listed in the "Connection" header.
@@ -142,7 +126,7 @@ func Forward(config *ForwardConfig) func(http.Handler) http.Handler {
 				r.Header.Del(connectionHeader)
 			}
 
-			// 转发验证
+			// 转发认证
 			forwardReq, err := http.NewRequest(http.MethodGet, fa.address, nil)
 			// tracing.LogRequest(tracing.GetSpan(req), forwardReq)
 			if err != nil {
@@ -207,20 +191,6 @@ func Forward(config *ForwardConfig) func(http.Handler) http.Handler {
 				r.Header.Del(headerKey)
 				if len(forwardResponse.Header[headerKey]) > 0 {
 					r.Header[headerKey] = append([]string(nil), forwardResponse.Header[headerKey]...)
-				}
-			}
-
-			if fa.authResponseHeadersRegex != nil {
-				for headerKey := range r.Header {
-					if fa.authResponseHeadersRegex.MatchString(headerKey) {
-						r.Header.Del(headerKey)
-					}
-				}
-
-				for headerKey, headerValues := range forwardResponse.Header {
-					if fa.authResponseHeadersRegex.MatchString(headerKey) {
-						r.Header[headerKey] = append([]string(nil), headerValues...)
-					}
 				}
 			}
 

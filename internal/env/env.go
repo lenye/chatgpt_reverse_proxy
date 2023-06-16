@@ -17,11 +17,16 @@ package env
 const Prefix = "OXY_"
 
 const (
-	Port           = Prefix + "PORT"
-	Target         = Prefix + "TARGET"
-	APIType        = Prefix + "API_TYPE"
-	ApiKey         = Prefix + "API_KEY"
-	AuthType       = Prefix + "AUTH_TYPE"
+	Port    = Prefix + "PORT"
+	Target  = Prefix + "TARGET"
+	APIType = Prefix + "API_TYPE"
+	ApiKey  = Prefix + "API_KEY"
+
+	AuthType = Prefix + "AUTH_TYPE"
+
 	AuthBasicUsers = Prefix + "AUTH_BASIC_USERS"
-	AuthForwardUrl = Prefix + "AUTH_FORWARD_URL"
+
+	AuthForwardUrl             = Prefix + "AUTH_FORWARD_URL"
+	AuthForwardRequestHeaders  = Prefix + "AUTH_FORWARD_REQUEST_HEADERS"
+	AuthForwardResponseHeaders = Prefix + "AUTH_FORWARD_RESPONSE_HEADERS"
 )

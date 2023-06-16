@@ -30,9 +30,11 @@ var (
 	APIType = APITypeOpenAI
 	ApiKey  = ""
 
-	AuthType       = ""
-	AuthBasicUsers = ""
-	AuthForwardUrl = ""
+	AuthType                   = ""
+	AuthBasicUsers             = ""
+	AuthForwardUrl             = ""
+	AuthForwardRequestHeaders  = ""
+	AuthForwardResponseHeaders = ""
 )
 
 const (
@@ -139,5 +141,19 @@ func GetEnv() {
 			log.Fatalf("invalid %s=%s, cause %s", env.AuthForwardUrl, AuthForwardUrl, err)
 		}
 		log.Printf("auth forward url: %s", AuthForwardUrl)
+
+		// AuthForwardRequestHeaders
+		if envAuthForwardRequestHeaders, ok := os.LookupEnv(env.AuthForwardRequestHeaders); ok {
+			if envAuthForwardRequestHeaders != "" {
+				AuthForwardRequestHeaders = envAuthForwardRequestHeaders
+			}
+		}
+
+		// AuthForwardResponseHeaders
+		if envAuthForwardResponseHeaders, ok := os.LookupEnv(env.AuthForwardResponseHeaders); ok {
+			if envAuthForwardResponseHeaders != "" {
+				AuthForwardResponseHeaders = envAuthForwardResponseHeaders
+			}
+		}
 	}
 }

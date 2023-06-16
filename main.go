@@ -57,24 +57,26 @@ func main() {
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
 
 	// middleware
-	chain := alice.New()
-	switch config.AuthType {
-	case config.AuthTypeBasic:
-		cfg := auth.BasicConfig{
-			Users: strings.Split(config.AuthBasicUsers, ","),
-		}
-		chain = chain.Append(auth.Basic(&cfg))
-	case config.AuthTypeForward:
+	pipe := alice.New()
+	if config.AuthType == config.AuthTypeForward {
 		cfg := auth.ForwardConfig{
 			Address:            config.AuthForwardUrl,
 			TrustForwardHeader: true,
 		}
-		chain = chain.Append(auth.Forward(&cfg))
+		if config.AuthForwardRequestHeaders != "" {
+			cfg.AuthRequestHeaders = strings.Split(config.AuthForwardRequestHeaders, ",")
+		}
+		if config.AuthForwardResponseHeaders != "" {
+			cfg.AuthResponseHeaders = strings.Split(config.AuthForwardResponseHeaders, ",")
+		}
+		pipe = pipe.Append(auth.Forward(&cfg))
 	}
-	chain = chain.Append(apikey.Handler)
+	if config.ApiKey != "" {
+		pipe = pipe.Append(apikey.Handler)
+	}
 
 	// http server
-	srv := &http.Server{Addr: ":" + config.Port, Handler: chain.Then(oxy)}
+	srv := &http.Server{Addr: ":" + config.Port, Handler: pipe.Then(oxy)}
 
 	idleConnClosed := make(chan struct{})
 
