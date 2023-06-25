@@ -31,7 +31,7 @@ var (
 	ApiKey  = ""
 
 	AuthType                   = ""
-	AuthBasicUsers             = ""
+	AuthFakeApiKeys            = ""
 	AuthForwardUrl             = ""
 	AuthForwardRequestHeaders  = ""
 	AuthForwardResponseHeaders = ""
@@ -49,8 +49,8 @@ const (
 )
 
 const (
-	AuthTypeBasic   = "basic"
-	AuthTypeForward = "forward"
+	AuthTypeFakeApiKey = "fake_apikey"
+	AuthTypeForward    = "forward"
 )
 
 func isDigit(s string) bool {
@@ -104,7 +104,7 @@ func GetEnv() {
 	// AuthType
 	if envAuthType, ok := os.LookupEnv(env.AuthType); ok {
 		switch envAuthType {
-		case AuthTypeBasic, AuthTypeForward:
+		case AuthTypeFakeApiKey, AuthTypeForward:
 			AuthType = envAuthType
 			if ApiKey == "" {
 				log.Fatalf("env %s missed", env.ApiKey)
@@ -116,17 +116,17 @@ func GetEnv() {
 	}
 
 	switch AuthType {
-	case AuthTypeBasic:
-		// AuthBasicUsers
-		if envAuthBasicUsers, ok := os.LookupEnv(env.AuthBasicUsers); ok {
-			if envAuthBasicUsers != "" {
-				AuthBasicUsers = envAuthBasicUsers
+	case AuthTypeFakeApiKey:
+		// AuthFakeApiKeys
+		if envAuthFakeApiKeys, ok := os.LookupEnv(env.AuthFakeApiKeys); ok {
+			if envAuthFakeApiKeys != "" {
+				AuthFakeApiKeys = envAuthFakeApiKeys
 			}
 		}
-		if AuthBasicUsers == "" {
-			log.Fatalf("env %s missed", env.AuthBasicUsers)
+		if AuthFakeApiKeys == "" {
+			log.Fatalf("env %s missed", env.AuthFakeApiKeys)
 		}
-		log.Printf("basic auth users: %s", AuthBasicUsers)
+		log.Printf("fake api keys: %s", AuthFakeApiKeys)
 	case AuthTypeForward:
 		// AuthForwardUrl
 		if envAuthForwardUrl, ok := os.LookupEnv(env.AuthForwardUrl); ok {

@@ -12,11 +12,12 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 2. OXY_PORT: 代理服务端口；默认=9000
 3. OXY_API_TYPE: api 类型（open_ai、azure、azure_ad）；默认=open_ai
 4. OXY_API_KEY: api 授权；默认为空
-5. OXY_AUTH_TYPE: 代理认证类型（forward）
+5. OXY_AUTH_TYPE: 代理认证类型（forward, fake_apikey）
 6. OXY_AUTH_FORWARD_URL: http forward 认证的 url，在 OXY_AUTH_TYPE=forward 时必须填写
 7. OXY_AUTH_FORWARD_REQUEST_HEADERS: 定义要从 http 请求复制到认证服务器的 header 列表，名称之间用 "," 分隔
 8. OXY_AUTH_FORWARD_RESPONSE_HEADERS: 定义要从认证服务器的 http 响应中复制的 header 列表，名称之间用 ","
    分隔，并在转发的请求上设置、替换任何现有的 http header
+9. OXY_AUTH_FAKE_APIKEYS: 定义虚拟 apikey 认证列表，apikey 之间用 "," 分隔；真实的 apikey 由 OXY_API_KEY 参数指定
 
 ### 腾讯云函数配置
 

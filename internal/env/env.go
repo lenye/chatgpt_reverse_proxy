@@ -24,7 +24,7 @@ const (
 	APIType = Prefix + "API_TYPE"
 
 	AuthType                   = Prefix + "AUTH_TYPE"
-	AuthBasicUsers             = Prefix + "AUTH_BASIC_USERS"
+	AuthFakeApiKeys            = Prefix + "AUTH_FAKE_APIKEYS"
 	AuthForwardUrl             = Prefix + "AUTH_FORWARD_URL"
 	AuthForwardRequestHeaders  = Prefix + "AUTH_FORWARD_REQUEST_HEADERS"
 	AuthForwardResponseHeaders = Prefix + "AUTH_FORWARD_RESPONSE_HEADERS"

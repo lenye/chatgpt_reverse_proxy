@@ -58,7 +58,13 @@ func main() {
 
 	// middleware
 	pipe := alice.New()
-	if config.AuthType == config.AuthTypeForward {
+	switch config.AuthType {
+	case config.AuthTypeFakeApiKey:
+		cfg := auth.FakeApiKeyConfig{
+			ApiKeys: strings.Split(config.AuthFakeApiKeys, ","),
+		}
+		pipe = pipe.Append(auth.FakeApiKey(&cfg))
+	case config.AuthTypeForward:
 		cfg := auth.ForwardConfig{
 			Address:            config.AuthForwardUrl,
 			TrustForwardHeader: true,

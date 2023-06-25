@@ -86,17 +86,15 @@ type forwardAuth struct {
 }
 
 // Forward 转发认证
-func Forward(config *ForwardConfig) func(http.Handler) http.Handler {
-
+func Forward(cfg *ForwardConfig) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
-
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 			fa := &forwardAuth{
-				address:             config.Address,
-				authResponseHeaders: config.AuthResponseHeaders,
-				trustForwardHeader:  config.TrustForwardHeader,
-				authRequestHeaders:  config.AuthRequestHeaders,
+				address:             cfg.Address,
+				authResponseHeaders: cfg.AuthResponseHeaders,
+				trustForwardHeader:  cfg.TrustForwardHeader,
+				authRequestHeaders:  cfg.AuthRequestHeaders,
 			}
 
 			// Ensure our request client does not follow redirects
