@@ -62,30 +62,30 @@ func isDigit(s string) bool {
 	return true
 }
 
-func GetEnv() {
+func Read() {
 	// Target
-	if envTarget, ok := os.LookupEnv(env.Target); ok {
-		if envTarget != "" {
-			Target = envTarget
+	if val, ok := os.LookupEnv(env.Target); ok {
+		if val != "" {
+			Target = val
 		}
 	}
 	log.Printf("target: %s", Target)
 
 	// Port
-	if envPort, ok := os.LookupEnv(env.Port); ok {
-		if envPort != "" {
-			if !isDigit(envPort) {
-				log.Fatalf("invalid %s: %s", env.Port, envPort)
+	if val, ok := os.LookupEnv(env.Port); ok {
+		if val != "" {
+			if !isDigit(val) {
+				log.Fatalf("invalid %s: %s", env.Port, val)
 			}
-			Port = envPort
+			Port = val
 		}
 	}
 	log.Printf("serve on port %s", Port)
 
 	// ApiKey
-	if envApiKey, ok := os.LookupEnv(env.ApiKey); ok {
-		if envApiKey != "" {
-			ApiKey = envApiKey
+	if val, ok := os.LookupEnv(env.ApiKey); ok {
+		if val != "" {
+			ApiKey = val
 		}
 	}
 	if ApiKey != "" {
@@ -93,19 +93,19 @@ func GetEnv() {
 	}
 
 	// APIType
-	if envAPIType, ok := os.LookupEnv(env.APIType); ok {
-		switch envAPIType {
+	if val, ok := os.LookupEnv(env.APIType); ok {
+		switch val {
 		case APITypeOpenAI, APITypeAzure, APITypeAzureAD:
-			APIType = envAPIType
+			APIType = val
 		}
 	}
 	log.Printf("api type: %s", APIType)
 
 	// AuthType
-	if envAuthType, ok := os.LookupEnv(env.AuthType); ok {
-		switch envAuthType {
-		case AuthTypeFakeApiKey, AuthTypeForward:
-			AuthType = envAuthType
+	if val, ok := os.LookupEnv(env.AuthType); ok {
+		switch val {
+		case AuthTypeFakeApiKey:
+			AuthType = val
 			if ApiKey == "" {
 				log.Fatalf("env %s missed", env.ApiKey)
 			}
@@ -118,9 +118,9 @@ func GetEnv() {
 	switch AuthType {
 	case AuthTypeFakeApiKey:
 		// AuthFakeApiKeys
-		if envAuthFakeApiKeys, ok := os.LookupEnv(env.AuthFakeApiKeys); ok {
-			if envAuthFakeApiKeys != "" {
-				AuthFakeApiKeys = envAuthFakeApiKeys
+		if val, ok := os.LookupEnv(env.AuthFakeApiKeys); ok {
+			if val != "" {
+				AuthFakeApiKeys = val
 			}
 		}
 		if AuthFakeApiKeys == "" {
@@ -129,9 +129,9 @@ func GetEnv() {
 		log.Printf("fake api keys: %s", AuthFakeApiKeys)
 	case AuthTypeForward:
 		// AuthForwardUrl
-		if envAuthForwardUrl, ok := os.LookupEnv(env.AuthForwardUrl); ok {
-			if envAuthForwardUrl != "" {
-				AuthForwardUrl = envAuthForwardUrl
+		if val, ok := os.LookupEnv(env.AuthForwardUrl); ok {
+			if val != "" {
+				AuthForwardUrl = val
 			}
 		}
 		if AuthForwardUrl == "" {
@@ -143,16 +143,16 @@ func GetEnv() {
 		log.Printf("auth forward url: %s", AuthForwardUrl)
 
 		// AuthForwardRequestHeaders
-		if envAuthForwardRequestHeaders, ok := os.LookupEnv(env.AuthForwardRequestHeaders); ok {
-			if envAuthForwardRequestHeaders != "" {
-				AuthForwardRequestHeaders = envAuthForwardRequestHeaders
+		if val, ok := os.LookupEnv(env.AuthForwardRequestHeaders); ok {
+			if val != "" {
+				AuthForwardRequestHeaders = val
 			}
 		}
 
 		// AuthForwardResponseHeaders
-		if envAuthForwardResponseHeaders, ok := os.LookupEnv(env.AuthForwardResponseHeaders); ok {
-			if envAuthForwardResponseHeaders != "" {
-				AuthForwardResponseHeaders = envAuthForwardResponseHeaders
+		if val, ok := os.LookupEnv(env.AuthForwardResponseHeaders); ok {
+			if val != "" {
+				AuthForwardResponseHeaders = val
 			}
 		}
 	}

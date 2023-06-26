@@ -47,7 +47,7 @@ func main() {
 		return
 	}
 
-	config.GetEnv()
+	config.Read()
 
 	// Target
 	oxyTarget, err := url.Parse(config.Target)
