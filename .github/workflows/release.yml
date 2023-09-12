@@ -6,7 +6,7 @@ on:
       - "v*.*.*"
 
 env:
-  GO_VERSION: "1.20"
+  GO_VERSION: "1.21"
 
 jobs:
 
@@ -14,16 +14,12 @@ jobs:
     name: GoReleaser build
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/go/src/github.com/lenye/chatgpt_reverse_proxy
 
     steps:
       - name: Check out code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          path: go/src/github.com/lenye/chatgpt_reverse_proxy
 
       - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v4
@@ -36,6 +32,5 @@ jobs:
         with:
           version: latest
           args: release --clean
-          workdir: go/src/github.com/lenye/chatgpt_reverse_proxy
         env:
           GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
