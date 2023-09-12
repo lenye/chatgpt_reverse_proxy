@@ -8,8 +8,8 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 
 ### 可用的环境变量
 
-1. REVERSE_PROXY_TARGET: 反向代理目标，默认=https://api.openai.com
-2. REVERSE_PROXY_PORT: 代理服务端口，默认=9000
+1. OXY_TARGET: 反向代理目标，默认=https://api.openai.com
+2. OXY_PORT: 代理服务端口，默认=9000
 
 ### 腾讯云函数配置
 
