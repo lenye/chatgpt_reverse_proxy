@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package target
+package env
 
-var Url = "https://api.openai.com"
+const Prefix = "OXY_"
+
+const (
+	Port   = Prefix + "PORT"
+	Target = Prefix + "TARGET"
+)

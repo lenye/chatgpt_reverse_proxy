@@ -16,18 +16,19 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-	"unicode"
 
-	"github.com/lenye/chatgpt_reverse_proxy/internal/target"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 	"github.com/lenye/chatgpt_reverse_proxy/pkg/proxy"
 	"github.com/lenye/chatgpt_reverse_proxy/pkg/version"
 )
@@ -42,32 +43,20 @@ func main() {
 		fmt.Print(version.Print())
 		return
 	}
+	start := time.Now()
 
-	if envTarget, ok := os.LookupEnv("REVERSE_PROXY_TARGET"); ok {
-		if envTarget != "" {
-			target.Url = envTarget
-		}
-	}
-	log.Printf("reverse proxy target: %s", target.Url)
+	config.Read()
 
-	oxyTarget, err := url.Parse(target.Url)
+	// Target
+	oxyTarget, err := url.Parse(config.Target)
 	if err != nil {
-		log.Fatalf("invalid REVERSE_PROXY_TARGET: %s")
+		slog.Error(fmt.Sprintf("invalid %s=%s", env.Target, config.Target), "error", err)
+		os.Exit(1)
+		return
 	}
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
 
-	port := "9000"
-	if envPort, ok := os.LookupEnv("REVERSE_PROXY_PORT"); ok {
-		if envPort != "" {
-			if !isDigit(envPort) {
-				log.Fatalf("invalid REVERSE_PROXY_PORT: %s", envPort)
-			}
-			port = envPort
-		}
-	}
-	log.Printf("reverse proxy serve on port %s", port)
-
-	srv := &http.Server{Addr: ":" + port, Handler: oxy}
+	srv := &http.Server{Addr: ":" + config.Port, Handler: oxy}
 
 	idleConnClosed := make(chan struct{})
 
@@ -75,35 +64,27 @@ func main() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, syscall.SIGINT, syscall.SIGTERM)
 		s := <-sigint
-		log.Printf("received signal: %v", s)
+		slog.Debug(fmt.Sprintf("received signal: %v", s))
 
 		// We received an interrupt signal, shut down.
 		if err := srv.Shutdown(context.Background()); err != nil {
 			// Error from closing listeners, or context timeout:
-			log.Printf("server shutdown failed: %v", err)
+			slog.Error("server shutdown failed", "error", err)
 		}
 		close(idleConnClosed)
 	}()
 
 	if err := srv.ListenAndServe(); err != nil {
-		if err == http.ErrServerClosed {
-			log.Println("server closed")
+		if errors.Is(err, http.ErrServerClosed) {
+			slog.Info("server closed")
 		} else {
-			log.Printf("server failed, err: %v", err)
+			slog.Error("server failed", "error", err)
 		}
 	}
 
 	<-idleConnClosed
 
-	log.Printf("%s exit, start: %s, uptime: %s",
-		version.AppName, version.StartTime, time.Since(version.StartTime))
-}
-
-func isDigit(s string) bool {
-	for _, c := range s {
-		if !unicode.IsDigit(c) {
-			return false
-		}
-	}
-	return true
+	slog.Info(version.AppName+" exit",
+		"start", start, "uptime", time.Since(start),
+	)
 }
