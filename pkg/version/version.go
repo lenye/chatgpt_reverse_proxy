@@ -17,7 +17,6 @@ package version
 import (
 	"fmt"
 	"runtime"
-	"time"
 )
 
 var (
@@ -27,8 +26,6 @@ var (
 	BuildTime   = "unknown"               // 编译时间
 
 	OpenSource = "https://github.com/lenye/chatgpt_reverse_proxy" // 开发人
-
-	StartTime = time.Now()
 )
 
 const versionTemplate = `%s

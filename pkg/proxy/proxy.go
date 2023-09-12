@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -27,12 +28,6 @@ import (
 
 	"golang.org/x/net/http/httpguts"
 )
-
-// StatusClientClosedRequest non-standard HTTP status code for client disconnection.
-const StatusClientClosedRequest = 499
-
-// StatusClientClosedRequestText non-standard HTTP status for client disconnection.
-const StatusClientClosedRequestText = "Client Closed Request"
 
 const DefaultFlushInterval = 100 * time.Millisecond
 
@@ -105,15 +100,17 @@ func isWebSocketUpgrade(req *http.Request) bool {
 	return httpguts.HeaderValuesContainsToken(req.Header["Connection"], "Upgrade") &&
 		strings.EqualFold(req.Header.Get("Upgrade"), "websocket")
 }
+
 func errorHandler(w http.ResponseWriter, req *http.Request, err error) {
+	if errors.Is(err, context.Canceled) {
+		return
+	}
+
 	statusCode := http.StatusInternalServerError
 
-	switch {
-	case errors.Is(err, io.EOF):
+	if errors.Is(err, io.EOF) {
 		statusCode = http.StatusBadGateway
-	case errors.Is(err, context.Canceled):
-		statusCode = StatusClientClosedRequest
-	default:
+	} else {
 		var netErr net.Error
 		if errors.As(err, &netErr) {
 			if netErr.Timeout() {
@@ -125,12 +122,7 @@ func errorHandler(w http.ResponseWriter, req *http.Request, err error) {
 	}
 
 	w.WriteHeader(statusCode)
-	_, _ = w.Write([]byte(statusText(statusCode)))
-}
-
-func statusText(statusCode int) string {
-	if statusCode == StatusClientClosedRequest {
-		return StatusClientClosedRequestText
+	if _, werr := w.Write([]byte(http.StatusText(statusCode))); werr != nil {
+		slog.Error("errorHandler write status text failed", "error", werr)
 	}
-	return http.StatusText(statusCode)
 }
