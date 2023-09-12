@@ -45,7 +45,11 @@ func main() {
 	}
 	start := time.Now()
 
-	config.Read()
+	if err := config.Read(); err != nil {
+		slog.Error("config.Read failed", "error", err)
+		os.Exit(1)
+		return
+	}
 
 	// Target
 	oxyTarget, err := url.Parse(config.Target)
@@ -54,9 +58,12 @@ func main() {
 		os.Exit(1)
 		return
 	}
+
+	slog.Info("Configuration", slog.Group("config", "target", config.Target, "port", config.WebPort))
+
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
 
-	srv := &http.Server{Addr: ":" + config.Port, Handler: oxy}
+	srv := &http.Server{Addr: ":" + config.WebPort, Handler: oxy}
 
 	idleConnClosed := make(chan struct{})
 

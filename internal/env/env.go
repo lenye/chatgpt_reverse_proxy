@@ -17,6 +17,6 @@ package env
 const Prefix = "OXY_"
 
 const (
-	Port   = Prefix + "PORT"
-	Target = Prefix + "TARGET"
+	WebPort = Prefix + "PORT"
+	Target  = Prefix + "TARGET"
 )

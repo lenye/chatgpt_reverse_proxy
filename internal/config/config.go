@@ -16,43 +16,36 @@ package config
 
 import (
 	"fmt"
-	"log/slog"
 	"os"
 	"strconv"
 
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 )
 
-var (
-	Target = "https://api.openai.com"
-	Port   = "9000"
-)
+var WebPort = "9000"
+var Target = "https://api.openai.com"
 
-func Read() {
+func Read() error {
 	// Target
 	if val, ok := os.LookupEnv(env.Target); ok {
 		if val != "" {
 			Target = val
 		}
 	}
-	slog.Info(fmt.Sprintf("target: %s", Target))
 
-	// Port
-	if val, ok := os.LookupEnv(env.Port); ok {
+	// WebPort
+	if val, ok := os.LookupEnv(env.WebPort); ok {
 		if val != "" {
 			uInt, err := strconv.ParseUint(val, 10, 0)
 			if err != nil {
-				slog.Error(fmt.Sprintf("invalid %s=%s", env.Port, val), "error", err)
-				os.Exit(1)
-				return
+				return fmt.Errorf("invalid %s=%s, cause: %w", env.WebPort, val, err)
 			}
 			if uInt > 65535 {
-				slog.Error(fmt.Sprintf("invalid %s=%s, max=65535", env.Port, val))
-				os.Exit(1)
-				return
+				return fmt.Errorf("invalid %s=%s, cause: max=65535", env.WebPort, val)
 			}
-			Port = val
+			WebPort = val
 		}
 	}
-	slog.Info(fmt.Sprintf("serve on port %s", Port))
+
+	return nil
 }
