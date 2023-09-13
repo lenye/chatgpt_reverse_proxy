@@ -20,6 +20,7 @@ import (
 	"flag"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -29,8 +30,8 @@ import (
 
 	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
-	"github.com/lenye/chatgpt_reverse_proxy/pkg/proxy"
-	"github.com/lenye/chatgpt_reverse_proxy/pkg/version"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/proxy"
+	"github.com/lenye/chatgpt_reverse_proxy/internal/version"
 )
 
 func main() {
@@ -61,11 +62,23 @@ func main() {
 
 	slog.Info("Configuration", slog.Group("config", "target", config.Target, "port", config.WebPort))
 
+	var lc net.ListenConfig
+	// 主动启用mptcp
+	lc.SetMultipathTCP(true)
+
+	isMultipathTCP := lc.MultipathTCP()
+	slog.Debug("net.ListenConfig", "MultipathTCP", isMultipathTCP)
+
+	ln, err := lc.Listen(context.Background(), "tcp", ":"+config.WebPort)
+	if err != nil {
+		slog.Error("server listen failed", "error", err)
+		os.Exit(1)
+		return
+	}
+	slog.Info("server listening on " + ln.Addr().String())
+
 	oxy := proxy.BuildSingleHostProxy(oxyTarget)
-
 	srv := &http.Server{Addr: ":" + config.WebPort, Handler: oxy}
-
-	idleConnClosed := make(chan struct{})
 
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -78,18 +91,12 @@ func main() {
 			// Error from closing listeners, or context timeout:
 			slog.Error("server shutdown failed", "error", err)
 		}
-		close(idleConnClosed)
 	}()
 
-	if err := srv.ListenAndServe(); err != nil {
-		if errors.Is(err, http.ErrServerClosed) {
-			slog.Info("server closed")
-		} else {
-			slog.Error("server failed", "error", err)
-		}
+	if err := srv.Serve(ln); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		slog.Error("server failed", "error", err)
 	}
-
-	<-idleConnClosed
+	slog.Info("server stopped")
 
 	slog.Info(version.AppName+" exit",
 		"start", start, "uptime", time.Since(start),
