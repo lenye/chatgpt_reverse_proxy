@@ -13,7 +13,7 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.Binary}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
@@ -53,7 +53,30 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=tencentcloud_scf_chatgpt_reverse_proxy
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+      - -extldflags
+      - -static
+    flags:
+      - -trimpath
+    goos:
+      - linux
+    goarch:
+      - amd64
+    goamd64:
+      - v2
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+
+  - id: aliyun_fc
+    binary: main
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
@@ -76,7 +99,7 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=huaweicloud_func_chatgpt_reverse_proxy
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
       - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
@@ -121,11 +144,11 @@ archives:
 
   - id: aliyun_fc
     builds:
-      - tencentcloud_scf
+      - aliyun_fc
     name_template: 'aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
     files:
-      - /code/bootstrap
+      - code/bootstrap
       - LICENSE
       - README.md
 
