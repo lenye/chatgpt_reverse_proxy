@@ -71,7 +71,7 @@ builds:
 
 
   - id: aliyun_fc
-    binary: main
+    binary: code/main
     env:
       - CGO_ENABLED=0
     ldflags:
