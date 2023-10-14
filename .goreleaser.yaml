@@ -9,7 +9,6 @@ before:
 builds:
   - id: reverse_proxy
     binary: chatgpt_reverse_proxy
-
     env:
       - CGO_ENABLED=0
     ldflags:
@@ -50,7 +49,6 @@ builds:
 
   - id: tencentcloud_scf
     binary: main
-
     env:
       - CGO_ENABLED=0
     ldflags:
@@ -72,6 +70,30 @@ builds:
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 
+  - id: huaweicloud_func
+    binary: main
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName=huaweicloud_func_chatgpt_reverse_proxy
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+      - -extldflags
+      - -static
+    flags:
+      - -trimpath
+      - -tags=huawei
+    goos:
+      - linux
+    goarch:
+      - amd64
+    goamd64:
+      - v2
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+
 archives:
   - id: reverse_proxy
     builds:
@@ -81,7 +103,6 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-
     files:
       - LICENSE
       - README.md
@@ -92,9 +113,30 @@ archives:
       - tencentcloud_scf
     name_template: 'tencentcloud_scf_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
-
     files:
       - scf_bootstrap
+      - LICENSE
+      - README.md
+
+
+  - id: aliyun_fc
+    builds:
+      - tencentcloud_scf
+    name_template: 'aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: zip
+    files:
+      - /code/bootstrap
+      - LICENSE
+      - README.md
+
+
+  - id: huaweicloud_func
+    builds:
+      - huaweicloud_func
+    name_template: 'huaweicloud_func_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: zip
+    files:
+      - bootstrap
       - LICENSE
       - README.md
 
@@ -112,3 +154,8 @@ changelog:
       - '^style:'
       - '^chore:'
       - '^ci:'
+
+
+release:
+  draft: true
+  replace_existing_draft: true

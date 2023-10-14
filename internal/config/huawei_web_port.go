@@ -12,39 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build huawei
+
 package config
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-
-	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
-)
-
-var Target = "https://api.openai.com"
-
-func Read() error {
-	// Target
-	if val, ok := os.LookupEnv(env.Target); ok {
-		if val != "" {
-			Target = val
-		}
-	}
-
-	// WebPort
-	if val, ok := os.LookupEnv(env.WebPort); ok {
-		if val != "" {
-			uInt, err := strconv.ParseUint(val, 10, 0)
-			if err != nil {
-				return fmt.Errorf("invalid %s=%s, cause: %w", env.WebPort, val, err)
-			}
-			if uInt > 65535 {
-				return fmt.Errorf("invalid %s=%s, cause: max=65535", env.WebPort, val)
-			}
-			WebPort = val
-		}
-	}
-
-	return nil
-}
+var WebPort = "8000"
