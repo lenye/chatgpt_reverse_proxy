@@ -17,5 +17,4 @@
 package config
 
 var WebPort = "8000"
-
 var HopHttpHeaderPrefix = "X-CCF"

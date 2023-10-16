@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build tencentcloud_scf
+//go:build !tencentcloud_scf && !huaweicloud_func && !aliyun_fc
 
 package config
 
 var WebPort = "9000"
-var HopHttpHeaderPrefix = "X-SCF"
+var HopHttpHeaderPrefix = ""

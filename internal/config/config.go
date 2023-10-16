@@ -24,11 +24,7 @@ import (
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 )
 
-var (
-	Target              = "https://api.openai.com"
-	WebPort             = "9000"
-	HopHttpHeaderPrefix = ""
-)
+var Target = "https://api.openai.com"
 
 func Read() error {
 	// Target
