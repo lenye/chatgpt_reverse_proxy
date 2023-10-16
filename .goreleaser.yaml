@@ -72,7 +72,7 @@ builds:
 
 
   - id: aliyun_fc
-    binary: code/main
+    binary: main
     env:
       - CGO_ENABLED=0
     ldflags:
@@ -150,7 +150,6 @@ archives:
     name_template: 'aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
     files:
-      - code/bootstrap
       - LICENSE
       - README.md
 
