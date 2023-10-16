@@ -18,4 +18,4 @@ package config
 
 var WebPort = "8000"
 
-const HopPrefix = "X-CCF"
+var HopHttpHeaderPrefix = "X-CCF"

@@ -24,7 +24,11 @@ import (
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 )
 
-var Target = "https://api.openai.com"
+var (
+	Target              = "https://api.openai.com"
+	WebPort             = "9000"
+	HopHttpHeaderPrefix = ""
+)
 
 func Read() error {
 	// Target
@@ -48,15 +52,22 @@ func Read() error {
 		}
 	}
 
+	// HopHttpHeaderPrefix
+	if val, ok := os.LookupEnv(env.HopHttpHeaderPrefix); ok {
+		if val != "" {
+			HopHttpHeaderPrefix = strings.ToUpper(val)
+		}
+	}
+
 	return nil
 }
 
 func RemoveHop(header http.Header) {
-	if HopPrefix != "" {
+	if HopHttpHeaderPrefix != "" {
 		hop := make([]string, 0)
 		for k := range header {
 			kk := strings.ToUpper(k)
-			if strings.HasPrefix(kk, HopPrefix) {
+			if strings.HasPrefix(kk, HopHttpHeaderPrefix) {
 				hop = append(hop, k)
 			}
 		}

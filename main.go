@@ -61,7 +61,7 @@ func main() {
 	}
 
 	slog.Info("Configuration",
-		slog.Group("config", "target", config.Target, "port", config.WebPort, "hop_prefix", config.HopPrefix))
+		slog.Group("config", "target", config.Target, "port", config.WebPort, "hop_http_header_prefix", config.HopHttpHeaderPrefix))
 
 	var lc net.ListenConfig
 	// 主动启用mptcp
