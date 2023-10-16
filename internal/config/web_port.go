@@ -16,12 +16,6 @@
 
 package config
 
-import (
-	"net/http"
-)
-
 var WebPort = "9000"
 
-func RemoveHop(header http.Header) {
-
-}
+const HopPrefix = ""

@@ -16,8 +16,10 @@ package config
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 )
@@ -47,4 +49,19 @@ func Read() error {
 	}
 
 	return nil
+}
+
+func RemoveHop(header http.Header) {
+	if HopPrefix != "" {
+		hop := make([]string, 0)
+		for k := range header {
+			kk := strings.ToUpper(k)
+			if strings.HasPrefix(kk, HopPrefix) {
+				hop = append(hop, k)
+			}
+		}
+		for _, h := range hop {
+			header.Del(h)
+		}
+	}
 }

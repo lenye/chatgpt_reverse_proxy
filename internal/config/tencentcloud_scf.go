@@ -16,22 +16,6 @@
 
 package config
 
-import (
-	"net/http"
-	"strings"
-)
-
 var WebPort = "9000"
 
-func RemoveHop(header http.Header) {
-	hop := make([]string, 0)
-	for k := range header {
-		kk := strings.ToUpper(k)
-		if strings.HasPrefix(kk, "X-SCF") {
-			hop = append(hop, k)
-		}
-	}
-	for _, h := range hop {
-		header.Del(h)
-	}
-}
+const HopPrefix = "X-SCF"
