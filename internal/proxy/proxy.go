@@ -27,6 +27,8 @@ import (
 	"time"
 
 	"golang.org/x/net/http/httpguts"
+
+	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
 )
 
 const DefaultFlushInterval = 100 * time.Millisecond
@@ -68,6 +70,8 @@ func directorBuilder(target *url.URL, passHostHeader bool) func(req *http.Reques
 		}
 
 		cleanWebSocketHeaders(outReq)
+
+		config.RemoveHop(outReq.Header)
 	}
 }
 

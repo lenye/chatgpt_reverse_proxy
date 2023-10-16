@@ -12,16 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build !tencentcloud_scf && !huaweicloud_func && !aliyun_fc
+//go:build huaweicloud_func
 
 package config
 
 import (
 	"net/http"
+	"strings"
 )
 
-var WebPort = "9000"
+var WebPort = "8000"
 
 func RemoveHop(header http.Header) {
-
+	hop := make([]string, 0)
+	for k := range header {
+		kk := strings.ToUpper(k)
+		if strings.HasPrefix(kk, "X-CCF") {
+			hop = append(hop, k)
+		}
+	}
+	for _, h := range hop {
+		header.Del(h)
+	}
 }

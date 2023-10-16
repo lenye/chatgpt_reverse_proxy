@@ -61,6 +61,7 @@ builds:
       - -static
     flags:
       - -trimpath
+      - -tags=tencentcloud_scf
     goos:
       - linux
     goarch:
@@ -84,6 +85,7 @@ builds:
       - -static
     flags:
       - -trimpath
+      - -tags=aliyun_fc
     goos:
       - linux
     goarch:
@@ -107,7 +109,7 @@ builds:
       - -static
     flags:
       - -trimpath
-      - -tags=huawei
+      - -tags=huaweicloud_func
     goos:
       - linux
     goarch:
