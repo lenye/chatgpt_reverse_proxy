@@ -16,6 +16,8 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务。
 
 使用腾讯云函数来搭建 chatGPT 反向代理服务。
 
+* OXY_HOP_HEADER_PREFIX: X-SCF （跳过 http header 前缀）
+
 #### A. 新建云函数
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
@@ -68,7 +70,11 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 Custom Runtime
 
+* OXY_HOP_HEADER_PREFIX: X-FC （跳过 http header 前缀）
+
 ### 华为云函数工作流
+
+* OXY_HOP_HEADER_PREFIX: X-CCF （跳过 http header 前缀）
 
 ## 使用样例
 
