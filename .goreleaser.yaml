@@ -75,54 +75,6 @@ builds:
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 
-  - id: aliyun_fc
-    binary: main
-    env:
-      - CGO_ENABLED=0
-    ldflags:
-      - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
-      - -extldflags
-      - -static
-    flags:
-      - -trimpath
-      - -tags=aliyun_fc
-    goos:
-      - linux
-    goarch:
-      - amd64
-    goamd64:
-      - v2
-    mod_timestamp: '{{ .CommitTimestamp }}'
-
-
-  - id: huaweicloud_func
-    binary: main
-    env:
-      - CGO_ENABLED=0
-    ldflags:
-      - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
-      - -extldflags
-      - -static
-    flags:
-      - -trimpath
-      - -tags=huaweicloud_func
-    goos:
-      - linux
-    goarch:
-      - amd64
-    goamd64:
-      - v2
-    mod_timestamp: '{{ .CommitTimestamp }}'
-
-
 archives:
   - id: reverse_proxy
     builds:
@@ -144,27 +96,6 @@ archives:
     format: zip
     files:
       - scf_bootstrap
-      - LICENSE
-      - README.md
-
-
-  - id: aliyun_fc
-    builds:
-      - aliyun_fc
-    name_template: 'aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-    format: zip
-    files:
-      - LICENSE
-      - README.md
-
-
-  - id: huaweicloud_func
-    builds:
-      - huaweicloud_func
-    name_template: 'huaweicloud_func_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-    format: zip
-    files:
-      - bootstrap
       - LICENSE
       - README.md
 
