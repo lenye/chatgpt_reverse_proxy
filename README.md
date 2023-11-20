@@ -133,6 +133,30 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 </details>
 
+<details>
+<summary>阿里云函数计算</summary>
+
+#### 预设的环境变量
+
+1. OXY_PORT: 9000 （代理服务端口）
+2. OXY_HOP_HEADER_PREFIX: X-FC （跳过 http header 前缀）
+
+#### 创建函数
+
+1. 函数计算控制台选择“服务及函数”
+2. 在左上角，选择地域，推荐选择美国
+3. 创建服务
+4. 创建函数方式：使用自定义运行时创建
+5. 请求处理程序类型：处理 HTTP 请求
+6. 运行环境：debian9
+7. 代码上传方式：通过 ZIP 包上传代码
+8. 启动命令：/code/main
+9. 监听端口: 9000
+
+https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-compute-console
+
+</details>
+
 ## License
 
 `ChatGPT_reverse_proxy` is released under

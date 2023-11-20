@@ -127,7 +127,6 @@ archives:
     name_template: 'aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: zip
     files:
-      - bootstrap
       - LICENSE
       - README.md
 
