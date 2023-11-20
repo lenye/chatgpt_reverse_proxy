@@ -141,11 +141,11 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 1. OXY_PORT: 9000 （代理服务端口）
 2. OXY_HOP_HEADER_PREFIX: X-FC （跳过 http header 前缀）
 
-#### 预编译zip包
+#### zip包
 
 下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
 
-文件名: aliyun_fc_chatgpt_reverse_proxy_v0.2.2_linux_amd64.zip
+文件名: aliyun_fc_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
 
 #### 新建云函数
 
@@ -163,11 +163,11 @@ https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-
 1. OXY_PORT: 8000 （代理服务端口）
 2. OXY_HOP_HEADER_PREFIX: X-CCF （跳过 http header 前缀）
 
-#### 预编译zip包
+#### zip包
 
 下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
 
-文件名: huaweicloud_func_chatgpt_reverse_proxy_v0.2.2_linux_amd64.zip
+文件名: huaweicloud_func_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
 
 #### 新建云函数
 
