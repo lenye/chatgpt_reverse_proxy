@@ -83,6 +83,11 @@ print(models.data[0].id)
 1. OXY_PORT: 9000 （代理服务端口）
 2. OXY_HOP_HEADER_PREFIX: X-SCF （跳过 http header 前缀）
 
+#### ZIP包下载
+
+* 下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
+* 文件名: tencentcloud_scf_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
+
 #### A. 新建云函数
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
@@ -97,10 +102,6 @@ print(models.data[0].id)
         - 时区: Asia/Shanghai(北京时间)
     - 函数代码
         - 提交方法: 本地上传zip包
-
-          下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
-
-          文件名: tencentcloud_scf_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
     - 高级配置
         - 启动命令: 自定义模板
     - 环境配置
@@ -140,6 +141,11 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 1. OXY_PORT: 9000 （代理服务端口）
 2. OXY_HOP_HEADER_PREFIX: X-FC （跳过 http header 前缀）
+
+#### ZIP包下载
+
+* 下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
+* 文件名: aliyun_fc_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
 
 #### 创建函数
 
