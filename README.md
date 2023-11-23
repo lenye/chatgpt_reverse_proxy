@@ -1,10 +1,14 @@
 # ChatGPT_reverse_proxy
 
-ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务软件。
+ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云函数上使用。
 
-默认支持 ChatGPT API 反向代理，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
-
-可以在自建服务器、云函数上使用。
+* 默认支持 OpenAI API 反向代理，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
+* 支持 Azure OpenAI API 反向代理，将 OXY_TARGET 环境变量修改为 Azure OpenAI
+  服务地址示例：https://docs-test-001.openai.azure.com
+   ```markdown
+   Azure 检索密钥和服务地址
+   https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cpython&pivots=programming-language-go
+   ```
 
 ### 可用的环境变量
 
@@ -14,7 +18,7 @@ ChatGPT_reverse_proxy 是一种高性能、云原生的反向代理服务软件�
 
 ## 使用样例
 
-### openai
+### OpenAI
 
 ```go
 package main
@@ -160,6 +164,8 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 9. 监听端口: 9000
 
 https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-compute-console
+
+
 
 </details>
 
