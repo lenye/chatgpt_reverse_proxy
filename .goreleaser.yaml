@@ -33,12 +33,6 @@ builds:
       - 386
       - arm
       - riscv64
-      - mips
-      - mipsle
-      - mips64
-      - mips64le
-    goamd64:
-      - v2
     goarm:
       - 7
       - 6
