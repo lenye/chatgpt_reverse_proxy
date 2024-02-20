@@ -3,18 +3,70 @@
 ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云函数上使用。
 
 * 默认支持 OpenAI API 反向代理，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
-* 支持 Azure OpenAI API 反向代理，将 OXY_TARGET 环境变量修改为 Azure OpenAI
-  服务地址示例：https://docs-test-001.openai.azure.com
+* 支持 Azure OpenAI API 反向代理，将 OXY_TARGET 环境变量修改为 Azure OpenAI 服务地址示例：https://docs-test-001.openai.azure.com
    ```markdown
    Azure 检索密钥和服务地址
    https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cpython&pivots=programming-language-go
    ```
 
-### 可用的环境变量
+## 可用的环境变量
 
 1. OXY_TARGET: 反向代理目标，默认=https://api.openai.com
 2. OXY_PORT: 代理服务端口，默认=9000
 3. OXY_HOP_HEADER_PREFIX: 跳过 http header 前缀，默认为空
+
+## 下载
+
+### 使用二进制发行版
+
+1. 下载 `ChatGPT_reverse_proxy` [最新版本](https://github.com/lenye/chatgpt_reverse_proxy/releases)
+
+1. 开始运行它:
+
+   linux
+
+   ```shell
+   $ ./chatgpt_reverse_proxy
+   ```
+
+### docker
+
+1. `Packages` https://github.com/lenye/chatgpt_reverse_proxy/pkgs/container/chatgpt_reverse_proxy
+
+1. 拉取容器映像
+   ```shell
+   $ docker pull ghcr.io/lenye/chatgpt_reverse_proxy
+   ```
+
+1. 开始运行它
+   ```shell
+   $ docker run --rm ghcr.io/lenye/chatgpt_reverse_proxy
+   ```
+   
+1. docker compose
+```yaml
+services:
+
+
+  ngrok:
+    image: ghcr.io/lenye/chatgpt_reverse_proxy:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - OXY_PORT: "9000"
+      - OXY_TARGET: "https://api.openai.com"
+      - OXY_HOP_HEADER_PREFIX: ""
+```
+
+### 源代码
+
+```shell
+$ git clone https://github.com/lenye/chatgpt_reverse_proxy.git
+```
 
 ## 使用样例
 
@@ -168,6 +220,7 @@ https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-
 
 
 </details>
+
 
 ## License
 

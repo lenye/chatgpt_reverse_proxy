@@ -31,7 +31,7 @@ import (
 	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
 	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
 	"github.com/lenye/chatgpt_reverse_proxy/internal/proxy"
-	"github.com/lenye/chatgpt_reverse_proxy/internal/version"
+	"github.com/lenye/chatgpt_reverse_proxy/pkg/version"
 )
 
 func main() {
