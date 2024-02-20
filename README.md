@@ -48,18 +48,18 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 services:
 
 
-  ngrok:
-    image: ghcr.io/lenye/chatgpt_reverse_proxy:latest
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    environment:
-      - OXY_PORT: "9000"
-      - OXY_TARGET: "https://api.openai.com"
-      - OXY_HOP_HEADER_PREFIX: ""
+   chatgpt_reverse_proxy:
+      image: ghcr.io/lenye/chatgpt_reverse_proxy:latest
+      restart: unless-stopped
+      ports:
+         - "9000:9000"
+      volumes:
+         - /etc/localtime:/etc/localtime:ro
+         - /etc/timezone:/etc/timezone:ro
+      environment:
+         OXY_PORT: "9000"
+         OXY_TARGET: "https://api.openai.com"
+         OXY_HOP_HEADER_PREFIX: ""
 ```
 
 ### 源代码
@@ -220,6 +220,7 @@ https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-
 
 
 </details>
+
 
 
 ## License
