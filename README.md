@@ -29,6 +29,15 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
    $ ./chatgpt_reverse_proxy
    ```
 
+#### 支持的操作系统
+
+* Windows
+* Linux
+* macOS
+* FreeBSD
+* OpenBSD
+
+
 ### docker
 
 1. `Packages` https://github.com/lenye/chatgpt_reverse_proxy/pkgs/container/chatgpt_reverse_proxy
