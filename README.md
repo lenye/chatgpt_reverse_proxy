@@ -44,7 +44,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 
 1. OpenAI API 端点地址样例：
 
-    ```http request
+    ```
     http://localhost:9000/v1/completions
     http://localhost:9000/v1/chat/completions
     ```
@@ -142,7 +142,7 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
 #### d. OpenAI API 端点地址样例：
 
-```http request
+```
 https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1/completions
 https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1/chat/completions
 ```
