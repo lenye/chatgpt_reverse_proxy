@@ -3,7 +3,8 @@
 ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云函数上使用。
 
 * 默认支持 OpenAI API 反向代理，请求 api 时，直接把接口地址 ( https://api.openai.com ) 替换为反向代理服务的地址。
-* 支持 Azure OpenAI API 反向代理，将 OXY_TARGET 环境变量修改为 Azure OpenAI 服务地址示例：https://docs-test-001.openai.azure.com
+* 支持 Azure OpenAI API 反向代理，将 OXY_TARGET 环境变量修改为 Azure OpenAI
+  服务地址示例：https://docs-test-001.openai.azure.com
    ```markdown
    Azure 检索密钥和服务地址
    https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cpython&pivots=programming-language-go
@@ -26,18 +27,18 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
     * macOS
     * FreeBSD
     * OpenBSD
-    
+
 1. 下载 `chatgpt_reverse_proxy` [最新版本 releases](https://github.com/lenye/chatgpt_reverse_proxy/releases)
 
 1. 开始运行它:
 
-    linux
+   linux
 
-    如需重新定义环境变量
+   如需重新定义环境变量
     ```shell
     $ export OXY_PORT=9000
     ```
-    运行反向代理服务
+   运行反向代理服务
     ```shell
     $ ./chatgpt_reverse_proxy
     ```
@@ -58,7 +59,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 
 1. docker compose
 
-    docker_compose.yml
+   docker_compose.yml
     ```yaml
     services:
        chatgpt_reverse_proxy:
@@ -74,7 +75,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
              OXY_TARGET: "https://api.openai.com"
              OXY_HOP_HEADER_PREFIX: ""
     ```
-    运行反向代理服务
+   运行反向代理服务
     ```shell
     $ docker compose up -d
     ```
@@ -101,21 +102,21 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “云产品” --> “Serverless” --> “云函数”
 3. “函数服务” --> “新建”
-   - 点击 “从头开始”
-   - 基础配置
-      - 函数类型: Web函数
-      - 名称: 随便填；例如：chatGPT
-      - 地域: 选择境外的美国、加拿大等，推荐“硅谷”
-      - 运行环境: Go 1
-      - 时区: Asia/Shanghai(北京时间)
-   - 函数代码
-      - 提交方法: 本地上传zip包
-   - 高级配置
-      - 启动命令: 自定义模板
-   - 环境配置
-      - 内存: 128MB
-      - 执行超时时间: 180 秒
-   - 点击 “完成”
+    - 点击 “从头开始”
+    - 基础配置
+        - 函数类型: Web函数
+        - 名称: 随便填；例如：chatGPT
+        - 地域: 选择境外的美国、加拿大等，推荐“硅谷”
+        - 运行环境: Go 1
+        - 时区: Asia/Shanghai(北京时间)
+    - 函数代码
+        - 提交方法: 本地上传zip包
+    - 高级配置
+        - 启动命令: 自定义模板
+    - 环境配置
+        - 内存: 128MB
+        - 执行超时时间: 180 秒
+    - 点击 “完成”
 
 ![基础配置.png](docs/new.png)
 
@@ -126,9 +127,9 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “函数服务” --> 在函数列表中选择刚刚新建函数“chatGPT”
 3. “函数管理” --> “函数代码”
-   - 访问路径
+    - 访问路径
 
-     复制链接: https://service-xxx-xxx.xxx.apigw.tencentcs.com/release/
+      复制链接: https://service-xxx-xxx.xxx.apigw.tencentcs.com/release/
 
 ![访问路径.png](docs/new3.png)
 
@@ -146,7 +147,7 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com
 https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1/completions
 https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1/chat/completions
 ```
-   
+
 </details>
 
 <details>
@@ -177,7 +178,6 @@ https://service-xxx-xxx.xxx.apigw.tencentcs.com/v1/chat/completions
 https://help.aliyun.com/zh/fc/getting-started/create-a-function-in-the-function-compute-console
 
 </details>
-
 
 ## 使用样例
 
@@ -237,8 +237,6 @@ print(models.data[0].id)
 ```
 
 </details>
-
-
 
 ## License
 
