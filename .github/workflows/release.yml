@@ -6,7 +6,7 @@ on:
       - "v*.*.*"
 
 env:
-  GO_VERSION: "1.22.6"
+  GO_VERSION: "1.23.3"
 
 jobs:
 
@@ -38,9 +38,8 @@ jobs:
           password: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
-          version: latest
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
