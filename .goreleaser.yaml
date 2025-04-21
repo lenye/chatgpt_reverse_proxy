@@ -13,10 +13,10 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.AppName={{.ProjectName}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildTime={{.CommitDate}}
       - -extldflags
       - -static
     flags:
@@ -52,10 +52,10 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.AppName={{.ProjectName}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildTime={{.CommitDate}}
       - -extldflags
       - -static
     flags:
@@ -75,10 +75,10 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.AppName={{.ProjectName}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.Version={{.Version}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildCommit={{.ShortCommit}}
-      - -X github.com/lenye/chatgpt_reverse_proxy/pkg/version.BuildTime={{.CommitDate}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.AppName={{.ProjectName}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.Version={{.Version}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildCommit={{.ShortCommit}}
+      - -X github.com/lenye/chatgpt_reverse_proxy/version.BuildTime={{.CommitDate}}
       - -extldflags
       - -static
     flags:

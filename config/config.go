@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
+	"github.com/lenye/chatgpt_reverse_proxy/env"
 )
 
 var Target = "https://api.openai.com"

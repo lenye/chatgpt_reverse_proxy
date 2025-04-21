@@ -28,10 +28,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
-	"github.com/lenye/chatgpt_reverse_proxy/internal/env"
-	"github.com/lenye/chatgpt_reverse_proxy/internal/proxy"
-	"github.com/lenye/chatgpt_reverse_proxy/pkg/version"
+	"github.com/lenye/chatgpt_reverse_proxy/config"
+	"github.com/lenye/chatgpt_reverse_proxy/env"
+	"github.com/lenye/chatgpt_reverse_proxy/proxy"
+	"github.com/lenye/chatgpt_reverse_proxy/version"
 )
 
 func main() {

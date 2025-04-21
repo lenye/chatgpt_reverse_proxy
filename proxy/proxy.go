@@ -28,7 +28,7 @@ import (
 
 	"golang.org/x/net/http/httpguts"
 
-	"github.com/lenye/chatgpt_reverse_proxy/internal/config"
+	"github.com/lenye/chatgpt_reverse_proxy/config"
 )
 
 const DefaultFlushInterval = 100 * time.Millisecond
