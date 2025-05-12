@@ -31,13 +31,13 @@ builds:
       - freebsd
       - openbsd
     goarch:
-      - amd64
-      - arm64
-      - 386
-      - arm
-      - riscv64
-      - s390x
-      - ppc64le
+      - "amd64"
+      - "arm64"
+      - "386"
+      - "arm"
+      - "riscv64"
+      - "s390x"
+      - "ppc64le"
     goarm:
       - 7
       - 6
@@ -128,7 +128,7 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format: [ "zip" ]
+    formats: [ "zip" ]
     files:
       - scf_bootstrap
       - LICENSE
@@ -145,7 +145,7 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format: [ "zip" ]
+    formats: [ "zip" ]
     files:
       - LICENSE
       - README.md
