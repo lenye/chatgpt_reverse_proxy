@@ -99,7 +99,7 @@ builds:
 
 archives:
   - id: reverse_proxy
-    builds:
+    ids:
       - reverse_proxy
     name_template: >-
       {{ .ProjectName }}_v{{ .Version }}_
@@ -109,16 +109,16 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format: tar.gz
+    formats: [ "tar.gz" ]
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [ "zip" ]
     files:
       - LICENSE
       - README.md
 
   - id: tencentcloud_scf
-    builds:
+    ids:
       - tencentcloud_scf
     name_template: >-
       tencentcloud_scf_chatgpt_reverse_proxy_v{{ .Version }}_
@@ -128,14 +128,14 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format: zip
+    format: [ "zip" ]
     files:
       - scf_bootstrap
       - LICENSE
       - README.md
 
   - id: aliyun_fc
-    builds:
+    ids:
       - aliyun_fc
     name_template: >-
       aliyun_fc_chatgpt_reverse_proxy_v{{ .Version }}_
@@ -145,7 +145,7 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format: zip
+    format: [ "zip" ]
     files:
       - LICENSE
       - README.md
