@@ -29,7 +29,6 @@ builds:
       - windows
       - darwin
       - freebsd
-      - openbsd
     goarch:
       - "amd64"
       - "arm64"
@@ -44,9 +43,6 @@ builds:
     ignore:
       - goos: windows
         goarch: arm
-      - goos: openbsd
-        goarch: arm
-        goarm: 6
     mod_timestamp: '{{ .CommitTimestamp }}'
 
   - id: tencentcloud_scf
@@ -106,7 +102,6 @@ archives:
       {{- if eq .Os "darwin" }}macOS
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
     formats: [ "tar.gz" ]
@@ -125,7 +120,6 @@ archives:
       {{- if eq .Os "darwin" }}macOS
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
     formats: [ "zip" ]
@@ -142,7 +136,6 @@ archives:
       {{- if eq .Os "darwin" }}macOS
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
     formats: [ "zip" ]
