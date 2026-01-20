@@ -26,7 +26,6 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
     * Linux
     * macOS
     * FreeBSD
-    * OpenBSD
 
 1. 下载 `chatgpt_reverse_proxy` [最新版本 releases](https://github.com/lenye/chatgpt_reverse_proxy/releases)
 
