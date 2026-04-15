@@ -78,7 +78,7 @@ func main() {
 	}
 	slog.Info("server listening on " + ln.Addr().String())
 
-	oxy := proxy.BuildSingleHostProxy(oxyTarget)
+	oxy := proxy.BuildSingleHostProxy(oxyTarget, false, false)
 	srv := &http.Server{Addr: ":" + config.WebPort, Handler: oxy}
 
 	go func() {

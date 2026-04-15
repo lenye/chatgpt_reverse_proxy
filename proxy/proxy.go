@@ -33,46 +33,122 @@ import (
 
 const DefaultFlushInterval = 100 * time.Millisecond
 
-func BuildSingleHostProxy(target *url.URL) http.Handler {
+func BuildSingleHostProxy(target *url.URL, passHostHeader bool, preservePath bool) http.Handler {
 	return &httputil.ReverseProxy{
-		Director:      directorBuilder(target, false),
+		Rewrite:       rewriteBuilder(target, passHostHeader, preservePath),
+		Transport:     httpTransport,
 		FlushInterval: DefaultFlushInterval,
 		BufferPool:    newBufferPool(),
 		ErrorHandler:  errorHandler,
 	}
 }
 
-func directorBuilder(target *url.URL, passHostHeader bool) func(req *http.Request) {
-	return func(outReq *http.Request) {
-		outReq.URL.Scheme = target.Scheme
-		outReq.URL.Host = target.Host
+func rewriteBuilder(target *url.URL, passHostHeader bool, preservePath bool) func(*httputil.ProxyRequest) {
+	return func(pr *httputil.ProxyRequest) {
+		copyForwardedHeader(pr.Out.Header, pr.In.Header)
+		if clientIP, _, err := net.SplitHostPort(pr.In.RemoteAddr); err == nil {
+			// If we aren't the first proxy retain prior
+			// X-Forwarded-For information as a comma+space
+			// separated list and fold multiple headers into one.
+			prior, ok := pr.Out.Header["X-Forwarded-For"]
+			omit := ok && prior == nil // Issue 38079: nil now means don't populate the header
+			if len(prior) > 0 {
+				clientIP = strings.Join(prior, ", ") + ", " + clientIP
+			}
+			if !omit {
+				pr.Out.Header.Set("X-Forwarded-For", clientIP)
+			}
+		}
 
-		u := outReq.URL
-		if outReq.RequestURI != "" {
-			parsedURL, err := url.ParseRequestURI(outReq.RequestURI)
+		pr.Out.URL.Scheme = target.Scheme
+		pr.Out.URL.Host = target.Host
+
+		u := pr.Out.URL
+		if pr.Out.RequestURI != "" {
+			parsedURL, err := url.ParseRequestURI(pr.Out.RequestURI)
 			if err == nil {
 				u = parsedURL
 			}
 		}
 
-		outReq.URL.Path = u.Path
-		outReq.URL.RawPath = u.RawPath
-		outReq.URL.RawQuery = strings.ReplaceAll(u.RawQuery, ";", "&")
-		outReq.RequestURI = "" // Outgoing request should not have RequestURI
+		pr.Out.URL.Path = u.Path
+		pr.Out.URL.RawPath = u.RawPath
 
-		outReq.Proto = "HTTP/1.1"
-		outReq.ProtoMajor = 1
-		outReq.ProtoMinor = 1
-
-		// Do not pass client Host header unless optsetter PassHostHeader is set.
-		if !passHostHeader {
-			outReq.Host = outReq.URL.Host
+		if preservePath {
+			pr.Out.URL.Path, pr.Out.URL.RawPath = JoinURLPath(target, u)
 		}
 
-		cleanWebSocketHeaders(outReq)
+		// If a plugin/middleware adds semicolons in query params, they should be urlEncoded.
+		pr.Out.URL.RawQuery = strings.ReplaceAll(u.RawQuery, ";", "&")
+		pr.Out.RequestURI = "" // Outgoing request should not have RequestURI
 
-		config.RemoveHop(outReq.Header)
+		pr.Out.Proto = "HTTP/1.1"
+		pr.Out.ProtoMajor = 1
+		pr.Out.ProtoMinor = 1
+
+		// Do not pass client Host header unless option PassHostHeader is set.
+		if !passHostHeader {
+			pr.Out.Host = pr.Out.URL.Host
+		}
+
+		if isWebSocketUpgrade(pr.Out) {
+			cleanWebSocketHeaders(pr.Out)
+		}
+
+		config.RemoveHop(pr.Out.Header)
 	}
+}
+
+// copyForwardedHeader copies header that are removed by the reverseProxy when a rewriteRequest is used.
+func copyForwardedHeader(dst, src http.Header) {
+	if val, ok := src["X-Forwarded-For"]; ok {
+		dst["X-Forwarded-For"] = val
+	}
+	if val, ok := src["Forwarded"]; ok {
+		dst["Forwarded"] = val
+	}
+	if val, ok := src["X-Forwarded-Host"]; ok {
+		dst["X-Forwarded-Host"] = val
+	}
+	if val, ok := src["X-Forwarded-Proto"]; ok {
+		dst["X-Forwarded-Proto"] = val
+	}
+}
+
+// JoinURLPath computes the joined path and raw path of the given URLs.
+// From https://github.com/golang/go/blob/b521ebb55a9b26c8824b219376c7f91f7cda6ec2/src/net/http/httputil/reverseproxy.go#L221
+func JoinURLPath(a, b *url.URL) (path, rawpath string) {
+	if a.RawPath == "" && b.RawPath == "" {
+		return singleJoiningSlash(a.Path, b.Path), ""
+	}
+
+	// Same as singleJoiningSlash, but uses EscapedPath to determine
+	// whether a slash should be added
+	apath := a.EscapedPath()
+	bpath := b.EscapedPath()
+
+	aslash := strings.HasSuffix(apath, "/")
+	bslash := strings.HasPrefix(bpath, "/")
+
+	switch {
+	case aslash && bslash:
+		return a.Path + b.Path[1:], apath + bpath[1:]
+	case !aslash && !bslash:
+		return a.Path + "/" + b.Path, apath + "/" + bpath
+	}
+	return a.Path + b.Path, apath + bpath
+}
+
+func singleJoiningSlash(a, b string) string {
+	aslash := strings.HasSuffix(a, "/")
+	bslash := strings.HasPrefix(b, "/")
+	switch {
+	case aslash && bslash:
+		return a + b[1:]
+	case !aslash && !bslash:
+		return a + "/" + b
+	}
+	return a + b
 }
 
 // cleanWebSocketHeaders Even if the websocket RFC says that headers should be case-insensitive,
@@ -115,8 +191,7 @@ func errorHandler(w http.ResponseWriter, req *http.Request, err error) {
 	if errors.Is(err, io.EOF) {
 		statusCode = http.StatusBadGateway
 	} else {
-		var netErr net.Error
-		if errors.As(err, &netErr) {
+		if netErr, ok := errors.AsType[net.Error](err); ok {
 			if netErr.Timeout() {
 				statusCode = http.StatusGatewayTimeout
 			} else {
