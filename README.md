@@ -1,4 +1,4 @@
-# ChatGPT_reverse_proxy
+# ai api reverse proxy
 
 ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云函数上使用。
 
@@ -16,7 +16,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 2. OXY_PORT: 代理服务端口，默认=9000
 3. OXY_HOP_HEADER_PREFIX: 跳过 http header 前缀，默认为空
 
-## 自托管chatGPT反向代理服务
+## 自托管 ai api 反向代理服务
 
 ### 使用二进制发行版
 
@@ -49,42 +49,12 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
     http://localhost:9000/v1/chat/completions
     ```
 
-### docker
-
-1. 拉取容器映像
-   ```shell
-   $ docker pull ghcr.io/lenye/chatgpt_reverse_proxy
-   ```
-
-1. docker compose
-
-   docker_compose.yml
-    ```yaml
-    services:
-       chatgpt_reverse_proxy:
-          image: ghcr.io/lenye/chatgpt_reverse_proxy:latest
-          restart: unless-stopped
-          ports:
-             - "9000:9000"
-          volumes:
-             - /etc/localtime:/etc/localtime:ro
-             - /etc/timezone:/etc/timezone:ro
-          environment:
-             OXY_PORT: "9000"
-             OXY_TARGET: "https://api.openai.com"
-             OXY_HOP_HEADER_PREFIX: ""
-    ```
-   运行反向代理服务
-    ```shell
-    $ docker compose up -d
-    ```
-
-### 在云函数搭建chatGPT反向代理服务
+### 在云函数搭建 ai api 反向代理服务
 
 <details>
 <summary>腾讯云函数</summary>
 
-使用腾讯云函数来搭建 chatGPT 反向代理服务。
+使用腾讯云函数来搭建 ai api 反向代理服务。
 
 #### 预设的环境变量
 
@@ -107,7 +77,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
         - 名称: 随便填；例如：chatGPT
         - 地域: 选择境外的美国、加拿大等，推荐“硅谷”
         - 运行环境: Go 1
-        - 时区: Asia/Shanghai(北京时间)
+        - 时区: Asia/Shanghai (北京时间)
     - 函数代码
         - 提交方法: 本地上传zip包
     - 高级配置
@@ -132,13 +102,13 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 
 ![访问路径.png](docs/new3.png)
 
-#### C. chatGPT 反向代理服务，腾讯云函数的地址
+#### C. ai api 反向代理服务，腾讯云函数的地址
 
-访问路径去除 "/release/"，得到 chatGPT 反向代理服务，腾讯云函数的地址:
+访问路径去除 "/release/"，得到 ai api 反向代理服务，腾讯云函数的地址:
 
 https://service-xxx-xxx.xxx.apigw.tencentcs.com
 
-请求 chatGPT api 时，直接把接口地址 ( https://api.openai.com ) 替换为腾讯云函数的地址。
+请求 ai api 时，直接把接口地址 ( https://api.openai.com ) 替换为腾讯云函数的地址。
 
 #### d. OpenAI API 端点地址样例：
 
@@ -240,8 +210,7 @@ print(models.data[0].id)
 ## License
 
 `ChatGPT_reverse_proxy` is released under
-the [Apache 2.0 license](https://github.com/lenye/chatgpt_reverse_proxy/blob/main/LICENSE). 
-
+the [Apache 2.0 license](https://github.com/lenye/chatgpt_reverse_proxy/blob/main/LICENSE).
 
 ## 免责声明
 
