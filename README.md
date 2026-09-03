@@ -66,7 +66,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 * 下载地址: https://github.com/lenye/chatgpt_reverse_proxy/releases
 * 文件名: tencentcloud_scf_chatgpt_reverse_proxy_v0.x.x_linux_amd64.zip
 
-#### A. 新建云函数
+#### a. 新建云函数
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “云产品” --> “Serverless” --> “云函数”
@@ -91,7 +91,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 
 ![高级配置.png](docs/new2.png)
 
-#### B. 函数管理
+#### b. 函数管理
 
 1. 进入腾讯云函数控制台: https://console.cloud.tencent.com/scf/list?rid=15&ns=default
 2. “函数服务” --> 在函数列表中选择刚刚新建函数“chatGPT”
@@ -102,7 +102,7 @@ ChatGPT_reverse_proxy 是 ai api 反向代理。可以在自建服务器、云�
 
 ![访问路径.png](docs/new3.png)
 
-#### C. ai api 反向代理服务，腾讯云函数的地址
+#### c. ai api 反向代理服务，腾讯云函数的地址
 
 访问路径去除 "/release/"，得到 ai api 反向代理服务，腾讯云函数的地址:
 
