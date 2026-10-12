@@ -1,5 +1,0 @@
-FROM gcr.io/distroless/static-debian12:latest-s390x
-
-COPY chatgpt_reverse_proxy /
-
-ENTRYPOINT ["/chatgpt_reverse_proxy"]

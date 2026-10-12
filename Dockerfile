@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/static-debian12:latest-amd64
+FROM gcr.io/distroless/static-debian13:latest-amd64
 
 COPY chatgpt_reverse_proxy /
 
