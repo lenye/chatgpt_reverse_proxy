@@ -64,12 +64,6 @@ func main() {
 		slog.Group("config", "target", config.Target, "port", config.WebPort, "hop_http_header_prefix", config.HopHttpHeaderPrefix))
 
 	var lc net.ListenConfig
-	// 主动启用mptcp
-	lc.SetMultipathTCP(true)
-
-	isMultipathTCP := lc.MultipathTCP()
-	slog.Debug("net.ListenConfig", "MultipathTCP", isMultipathTCP)
-
 	ln, err := lc.Listen(context.Background(), "tcp", ":"+config.WebPort)
 	if err != nil {
 		slog.Error("server listen failed", "error", err)
